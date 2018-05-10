@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Dinosaur.h"
 
 using namespace std;
@@ -38,8 +39,35 @@ bool Dinosaur::Read(ifstream &file) {
 	getline(file, Behavior);
 	getline(file, Colour);
 
-	Size = atoi(temp.c_str); // Преобразует строку в число
+	Size = atoi(temp.c_str()); // Преобразует строку в число
 
 	return true;
 }
 
+void Dinosaur::Set() {
+	char Temp[Length];
+
+	cout << "Create dinosaur.\n";
+
+	cout << "Type: ";
+	cin >> Temp;
+	Type = Temp;
+
+	cout << "Food: ";
+	cin >> Temp;
+	Food = Temp;
+
+	cout << "Size: ";
+	cin >> Temp;
+	Size = (float)atoi(Temp);
+
+	cout << "Behavior: ";
+	cin >> Temp;
+	Behavior = Temp;
+
+	cout << "Colour: ";
+	cin >> Temp;
+	Colour = Temp;
+
+	return;
+}

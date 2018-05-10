@@ -1,7 +1,29 @@
 #include "stdafx.h"
 #include "ManagerDinosaur.h"
 
+ManagerDinosaur* ManagerDinosaur::self = 0;
+
 using namespace std;
+
+ManagerDinosaur* ManagerDinosaur::Instance()
+{
+	if (!self)
+	{
+		self = new ManagerDinosaur();
+	}
+	return self;
+}
+
+bool ManagerDinosaur::DeleteInstance()
+{
+	if (self)
+	{
+		delete self;
+		self = 0;
+		return true;
+	}
+	return false;
+}
 
 Dinosaur* renew(Dinosaur *Mas, int Max, int NewMax) {
 	Dinosaur *temp = Mas;
@@ -41,7 +63,7 @@ bool ManagerDinosaur::Save(string NameFile) {
 	file << max << "\n";
 
 	for (int i = 0; i < max; ++i) {
-		dnz->Save(file);
+		dnz[i].Save(file);
 	}
 
 	file.close();
@@ -56,12 +78,13 @@ bool ManagerDinosaur::Read(string NameFile) {
 	string temp;
 
 	getline(file, temp);
-	max = atoi(temp.c_str);
+	max = atoi(temp.c_str());
 
 	dnz = new Dinosaur[max];
 
 	for (int i = 0; i < max; ++i) {
-		dnz->Read(file);
+		if (!dnz[i].Read(file))
+			return false;
 	}
 	
 	file.close();
@@ -75,11 +98,12 @@ bool ManagerDinosaur::ReadAdd(string NameFile) {
 	string temp;
 
 	getline(file, temp);
-	int a = atoi(temp.c_str);
-	renew(dnz, max, max + a);
+	int a = atoi(temp.c_str());
+	dnz = renew(dnz, max, max + a);
 
 	for (int i = max; i < max + a; ++i)
-		dnz->Read(file);
+		if (!dnz[i].Read(file))
+			return false;
 
 	max += a;
 
@@ -89,10 +113,24 @@ bool ManagerDinosaur::ReadAdd(string NameFile) {
 
 void ManagerDinosaur::Show() {
 
+	if (dnz == NULL || max == 0) {
+		cout << "No dinosaur\n";
+		return;
+	}
+
 	for (int i = 0; i < max; ++i) {
-		dnz->Show();
+		dnz[i].Show();
+		cout << "\n";
 	}
 
 	return;
 }
 
+void ManagerDinosaur::AddDinosaur() {
+	dnz = renew(dnz, max, max + 1);
+	
+	dnz[max].Set();
+	++max;
+
+	return;
+}

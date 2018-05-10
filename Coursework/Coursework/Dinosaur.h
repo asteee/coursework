@@ -1,6 +1,11 @@
 #pragma once
 
 #include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <Windows.h>
+#define Length 500 // максимальная длинна слов
 
 class Dinosaur
 {
@@ -15,6 +20,7 @@ public:
 	Dinosaur(std::string type, std::string food, float size, std::string behavior, std::string colour) { Type = type; Food = food; Size = size; Behavior = behavior; Colour = colour; }
 	~Dinosaur() {}
 
+	void Set();
 	void SetType(std::string type) { Type = type; }
 	void SetFood(std::string food) { Food = food; }
 	void SetSize(float size) { Size = size; }
@@ -23,6 +29,6 @@ public:
 	void SetDinosaur(std::string type, std::string food, float size, std::string behavior, std::string colour) { Type = type; Food = food; Size = size; Behavior = behavior; Colour = colour; }
 
 	void Show(); // показать динозавра
-	bool Save(ofstream &file);
-	bool Read(ifstream &file);
+	bool Save(std::ofstream &file);
+	bool Read(std::ifstream &file);
 };
